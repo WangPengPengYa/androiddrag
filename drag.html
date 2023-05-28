@@ -42,6 +42,7 @@
         font-size: 14px;
     }
 
+
     .grid-item:last-child {
         border-bottom: 1px solid #ecebeb;
     }
@@ -232,15 +233,19 @@
         this.lastPointermove.y = e.clientY;
         this.clone.x += this.diff.x;
         this.clone.y += this.diff.y;
+        if (this.clone.y > 176) {
+          this.clone.y = 176
+        }
+        if (this.clone.y < 44) {
+          this.clone.y = 44
+        }
         this.clone.element.style.transform =
             'translate3d(' + 0 + 'px, ' + this.clone.y + 'px, 0)';
         for (let i = 0; i < this.rectList.length; i++) {
           // 碰撞检测
           if (
-              e.clientX > this.rectList[i].left &&
-              e.clientX < this.rectList[i].right &&
-              e.clientY > this.rectList[i].top &&
-              e.clientY < this.rectList[i].bottom
+              e.clientY >= this.rectList[i].top &&
+              e.clientY <= this.rectList[i].bottom
           ) {
             this.drop.element = this.parent.children[i];
             this.drop.lastIndex = i;
@@ -315,10 +320,10 @@
     handlePointercancel(e) {
       if (this.isPointerdown) {
         this.isPointerdown = false;
-        this.drag.element.classList.remove('active');
         this.clone.element.remove();
-        this.drag.element.style.visibility = 'visible'
 
+        this.drag.element.classList.remove('active');
+        this.drag.element.style.visibility = 'visible'
       }
     }
 
